@@ -46,12 +46,6 @@ Update the package repository:
 sudo apt update
 ```
 
-Upgrade installed packages if required:
-
-```bash
-sudo apt upgrade -y
-```
-
 ---
 
 ## Step 3: Install Java
