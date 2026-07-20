@@ -62,7 +62,7 @@ Verify the Java installation:
 java -version
 ```
 
-Expected output will be similar to:
+### Expected output will be similar to:
 
 ```text
 openjdk version "21.x.x"
