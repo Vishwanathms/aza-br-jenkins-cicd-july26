@@ -43,7 +43,7 @@ Ubuntu 24.04 LTS
 Update the package repository:
 
 ```bash
-sudo apt update
+sudo apt update -y
 ```
 
 ---
