@@ -27,7 +27,7 @@ Official references: [Jenkins Docker installation guide](https://www.jenkins.io/
 | Disk               | 20 GB+                          |
 | Docker             | Docker Engine                   |
 | Jenkins Image      | `jenkins/jenkins:lts-jdk21`     |
-| Jenkins Web Port   | 8080                            |
+| Jenkins Web Port   | 9080                            |
 | Jenkins Agent Port | 50000                           |
 | Internet           | Required for images and plugins |
 
@@ -234,7 +234,7 @@ Run:
 docker run -d \
   --name jenkins \
   --restart unless-stopped \
-  -p 8080:8080 \
+  -p 9080:9080 \
   -p 50000:50000 \
   -v jenkins_home:/var/jenkins_home \
   jenkins/jenkins:lts-jdk21
@@ -247,7 +247,7 @@ docker run -d \
 | `-d`                                | Runs container in background        |
 | `--name jenkins`                    | Names the container `jenkins`       |
 | `--restart unless-stopped`          | Restarts Jenkins automatically      |
-| `-p 8080:8080`                      | Exposes Jenkins Web UI              |
+| `-p 9080:9080`                      | Exposes Jenkins Web UI              |
 | `-p 50000:50000`                    | Exposes inbound Jenkins agent port  |
 | `-v jenkins_home:/var/jenkins_home` | Provides persistent Jenkins storage |
 | `jenkins/jenkins:lts-jdk21`         | Jenkins LTS image                   |
@@ -319,13 +319,13 @@ For example:
 Open your browser:
 
 ```text
-http://<SERVER-IP>:8080
+http://<SERVER-IP>:9080
 ```
 
 Example:
 
 ```text
-http://192.168.1.100:8080
+http://192.168.1.100:9080
 ```
 
 You should see:
@@ -398,7 +398,7 @@ Verify the Jenkins URL.
 For example:
 
 ```text
-http://192.168.1.100:8080/
+http://192.168.1.100:9080/
 ```
 
 Click:
@@ -526,7 +526,7 @@ Run:
 docker run -d \
   --name jenkins \
   --restart unless-stopped \
-  -p 8080:8080 \
+  -p 9080:9080 \
   -p 50000:50000 \
   -v jenkins_home:/var/jenkins_home \
   jenkins/jenkins:lts-jdk21
@@ -535,7 +535,7 @@ docker run -d \
 Access Jenkins again:
 
 ```text
-http://<SERVER-IP>:8080
+http://<SERVER-IP>:9080
 ```
 
 Your previous:
@@ -557,7 +557,7 @@ This demonstrates **Jenkins data persistence**.
                 User Browser
                      |
                      |
-              http://IP:8080
+              http://IP:9080
                      |
                      v
         +---------------------------+
@@ -572,7 +572,7 @@ This demonstrates **Jenkins data persistence**.
         |   | Jenkins           |   |
         |   | Java / JDK 21     |   |
         |   |                   |   |
-        |   | Port 8080         |   |
+        |   | Port 9080         |   |
         |   | Port 50000        |   |
         |   +---------+---------+   |
         |             |             |
