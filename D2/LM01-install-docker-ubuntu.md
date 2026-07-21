@@ -252,9 +252,54 @@ Expected
 Active: active (running)
 ```
 
+
 ---
 
-# Task 10 – Verify Docker Engine
+# Task 10 – Create the Docker Group (if it doesn't exist)
+
+Run
+
+```bash
+sudo groupadd docker
+```
+
+# Task 11 -- Add the User to the Docker Group
+
+Replace labuser with your username if different.
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+# Task 12 -- Apply the New Group Membership
+
+Option 1 (Recommended)
+
+Log out and log back in.
+
+Option 2 (Without Logging Out)
+
+```bash
+newgrp docker
+```
+
+# Task 13 – verify Group Membership
+
+Run
+
+```bash
+groups
+```
+
+Expected output should include:
+
+```
+labuser sudo docker
+```
+
+---
+
+# Task 14 – Verify Docker Engine
 
 Run
 
