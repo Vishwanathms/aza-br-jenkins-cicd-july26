@@ -152,23 +152,7 @@ Save.
 
 ---
 
-## Build the Job
 
-Click
-
-```
-Build with Parameters
-```
-
-Enter
-
-```
-John
-```
-
-Run the build.
-
----
 
 ## Add Execute Shell
 
@@ -190,15 +174,33 @@ echo "Hello $USERNAME"
 echo "Welcome to Jenkins"
 ```
 
-Run again.
+
+
+## Build the Job
+
+Click
+
+```
+Build with Parameters
+```
+
+Enter
+
+```
+Swamy
+```
+
+Run the build.
 
 Expected Output
 
 ```
-Hello John
+Hello Swamy
 
 Welcome to Jenkins
 ```
+
+---
 
 ---
 
@@ -399,7 +401,7 @@ Workspace gets cleaned before every build.
 
 # Exercise 10 – Add Timestamps
 
-Enable
+Enable on the "Build Environemnt"
 
 ```
 Add timestamps to the Console Output

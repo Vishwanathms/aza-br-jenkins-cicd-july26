@@ -1,7 +1,3 @@
-Absolutely. Since this is **Module 3 – Jenkins Pipeline Syntax & Groovy Fundamentals**, the labs should not be isolated feature demos. They should simulate how an engineer gradually learns to build production pipelines.
-
-I recommend **3 scenario-based labs**, each about **45–60 minutes**, with increasing complexity.
-
 ---
 
 # Lab Manual 1
