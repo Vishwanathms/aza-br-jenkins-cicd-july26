@@ -280,7 +280,7 @@ Navigate
 inventory-app
 ```
 
-Create Dockerfile
+Create Dockerfile for Jar files
 
 ```bash
 vi Dockerfile
@@ -306,6 +306,28 @@ Save
 :wq
 ```
 
+option2: -- for war file 
+
+```bash
+vi Dockerfile
+```
+
+Insert
+
+```dockerfile
+
+FROM tomcat:10.1-jdk17
+
+# Remove default web applications
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy the WAR file
+COPY target/myapp.war /usr/local/tomcat/webapps/ROOT.war
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]
+```
 ---
 
 # Dockerfile Explanation
