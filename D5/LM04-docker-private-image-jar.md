@@ -322,7 +322,7 @@ FROM tomcat:10.1-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy the WAR file
-COPY target/myapp.war /usr/local/tomcat/webapps/ROOT.war
+COPY target/mvn-hello-world.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 
