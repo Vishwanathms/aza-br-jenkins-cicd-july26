@@ -1,5 +1,3 @@
-This is an important module because **Shared Libraries are one of the most common interview topics and are heavily used in enterprise Jenkins environments**. The lab should simulate a real enterprise migration where teams replace duplicated Pipeline code with reusable functions.
-
 ---
 
 # Lab Manual 1

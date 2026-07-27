@@ -1,6 +1,3 @@
-This is the **natural continuation of Lab 1**. Students already know how to create **one reusable function**. Now they should **design a reusable enterprise CI/CD framework** using multiple Shared Library functions.
-
-I would avoid simply asking them to create three Groovy files. Instead, make them feel like **DevOps Platform Engineers** building a standard CI/CD library for the organization.
 
 ---
 
