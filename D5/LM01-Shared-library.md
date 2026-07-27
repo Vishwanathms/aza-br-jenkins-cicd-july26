@@ -415,7 +415,7 @@ buildApp()
 
 full pipeline code 
 ```bash
-@Library('myLibrary') _
+@Library('shared-lib') _
 
 pipeline {
 
