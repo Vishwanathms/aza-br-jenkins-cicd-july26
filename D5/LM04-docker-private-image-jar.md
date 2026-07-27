@@ -510,7 +510,7 @@ Execute
 ```bash
 docker run -d \
 --name inventory-container \
--p 8080:8080 \
+-p 9090:8080 \
 inventory-app:v1
 ```
 
