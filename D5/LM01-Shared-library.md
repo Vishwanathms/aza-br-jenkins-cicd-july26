@@ -413,6 +413,31 @@ Reference Function
 buildApp()
 ```
 
+full pipeline code 
+```bash
+@Library('myLibrary') _
+
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Build') {
+
+            steps {
+
+                buildApp()
+
+            }
+
+        }
+
+    }
+
+}
+```
+
 Run the Pipeline.
 
 ---
