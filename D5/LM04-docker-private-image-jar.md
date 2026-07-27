@@ -274,6 +274,8 @@ JAR file generated.
 
 # Create Dockerfile
 
+  # option-1
+
 Navigate
 
 ```
@@ -306,7 +308,7 @@ Save
 :wq
 ```
 
-option2: -- for war file 
+# option-2-- for war file 
 
 ```bash
 vi Dockerfile
