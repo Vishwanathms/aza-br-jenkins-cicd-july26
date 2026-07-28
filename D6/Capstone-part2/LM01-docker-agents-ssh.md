@@ -78,11 +78,11 @@ Expected
 
 ---
 
-# Task 1 – Verify Jenkins SSH Keys
+# Task 1 – Verify LABVM SSH Keys
 
 ## Objective
 
-The Jenkins controller already has an SSH key pair.
+The LABVM already has an SSH key pair.
 
 Verify the keys.
 
@@ -96,12 +96,13 @@ Expected
 id_rsa
 id_rsa.pub
 known_hosts
+authorized_keys
 ```
 
 Display the public key.
 
 ```bash
-cat ~/.ssh/id_rsa.pub
+cat ~/.ssh/authorized_keys
 ```
 
 Example
@@ -110,41 +111,11 @@ Example
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC...
 ```
 
-> **Note:** We will embed this public key into the Docker image so that every container created from the image automatically trusts the Jenkins controller.
 
 ---
 
-# Task 2 – Copy the Public Key into the Docker Build Context
 
-Copy the Jenkins public key into the working directory.
-
-```bash
-cp ~/.ssh/id_rsa.pub jenkins-agent.pub
-```
-
-Verify
-
-```bash
-ls
-```
-
-Expected
-
-```
-jenkins-agent.pub
-```
-
-Current directory
-
-```
-jenkins-agent/
-
-│── jenkins-agent.pub
-```
-
----
-
-# Task 3 – Create the Dockerfile
+# Task 2 – Create the Dockerfile
 
 Create the Dockerfile.
 
@@ -199,7 +170,7 @@ CMD ["/usr/sbin/sshd","-D"]
 
 ---
 
-# Task 4 – Understand the Dockerfile
+# Task 3 – Understand the Dockerfile
 
 ## Base Image
 
@@ -248,7 +219,7 @@ Allows Docker commands without root.
 ---
 
 
-# Task 5 – Build the Docker Image
+# Task 4 – Build the Docker Image
 
 Build the image.
 
@@ -280,7 +251,7 @@ jenkins-agent       v1
 
 ---
 
-# Task 6 – Run the Jenkins Agent Container
+# Task 5 – Run the Jenkins Agent Container
 
 Run the container.
 
@@ -320,7 +291,7 @@ PORTS
 
 ---
 
-# Task 7 – Verify Passwordless SSH
+# Task 6 – Verify Passwordless SSH
 
 Since the public key was copied into the image, Jenkins can immediately connect using its private key.
 
@@ -366,7 +337,7 @@ docker version
 
 ---
 
-# Task 8 – Configure Jenkins Credentials
+# Task 7 – Configure Jenkins Credentials
 
 Navigate
 
