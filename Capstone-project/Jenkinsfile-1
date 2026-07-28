@@ -1,0 +1,177 @@
+pipeline {
+
+    agent {label "python"}
+
+    environment {
+
+        // Git Repository
+        GIT_REPO = 'https://github.com/yourusername/sample-java-app.git'
+
+        // Docker Image
+        DOCKER_IMAGE = 'yourdockerhubusername/sample-java-app'
+
+        // Version Tag
+        IMAGE_TAG = "v${BUILD_NUMBER}"
+
+        // Container Details
+        CONTAINER_NAME = 'sample-java-app'
+        HOST_PORT = '8081'
+        CONTAINER_PORT = '8080'
+    }
+
+    stages {
+
+        stage('Checkout Source Code') {
+
+            steps {
+                echo "Downloading source code from GitHub..."
+
+                git branch: 'main',
+                    url: "${GIT_REPO}"
+            }
+        }
+
+        stage('Build Java Application') {
+
+            steps {
+
+                echo "Compiling Java project..."
+
+                sh 'mvn clean package'
+
+            }
+        }
+
+        stage('Run Unit Tests') {
+
+            steps {
+
+                echo "Executing Unit Tests..."
+
+                sh 'mvn test'
+
+            }
+        }
+
+        stage('Build Docker Image') {
+
+            steps {
+
+                echo "Building Docker Image..."
+
+                sh """
+                docker build \
+                -t ${DOCKER_IMAGE}:${IMAGE_TAG} \
+                -t ${DOCKER_IMAGE}:latest .
+                """
+
+            }
+        }
+
+        stage('Login to Docker Hub') {
+
+            steps {
+
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
+
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login \
+                    -u "$DOCKER_USER" \
+                    --password-stdin
+                    '''
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+
+            steps {
+
+                echo "Uploading image to Docker Hub..."
+
+                sh """
+                docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
+                docker push ${DOCKER_IMAGE}:latest
+                """
+
+            }
+        }
+
+        stage('Stop Existing Container') {
+
+            steps {
+
+                sh """
+                docker stop ${CONTAINER_NAME} || true
+                docker rm ${CONTAINER_NAME} || true
+                """
+
+            }
+        }
+
+        stage('Deploy Application') {
+
+            steps {
+
+                echo "Starting Docker Container..."
+
+                sh """
+                docker run -d \
+                    --name ${CONTAINER_NAME} \
+                    -p ${HOST_PORT}:${CONTAINER_PORT} \
+                    ${DOCKER_IMAGE}:${IMAGE_TAG}
+                """
+
+            }
+        }
+
+        stage('Verify Deployment') {
+
+            steps {
+
+                echo "Waiting for application..."
+
+                sh "sleep 15"
+
+                sh """
+                curl http://localhost:${HOST_PORT}
+                """
+
+            }
+        }
+
+    }
+
+    post {
+
+        success {
+
+            echo "======================================"
+            echo "Application Successfully Deployed"
+            echo "======================================"
+
+        }
+
+        failure {
+
+            echo "======================================"
+            echo "Pipeline Failed"
+            echo "======================================"
+
+        }
+
+        always {
+
+            sh 'docker logout || true'
+
+            cleanWs()
+
+        }
+    }
+}
