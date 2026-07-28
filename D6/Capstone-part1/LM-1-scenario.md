@@ -206,7 +206,7 @@ You've successfully authenticated...
 Navigate to the project directory.
 
 ```bash
-cd ~/sample-maven-app
+cd ~/SampleMaven-Master
 ```
 
 Initialize Git.
