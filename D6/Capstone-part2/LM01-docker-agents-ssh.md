@@ -181,16 +181,16 @@ RUN useradd -m -s /bin/bash jenkins
 # Add Jenkins user to sudo and docker groups
 RUN usermod -aG sudo,docker jenkins
 
-# Create SSH directory
-RUN mkdir -p /home/jenkins/.ssh
+# # Create SSH directory
+# RUN mkdir -p /home/jenkins/.ssh
 
-# Copy Jenkins public key
-COPY jenkins-agent.pub /home/jenkins/.ssh/authorized_keys
+# # Copy Jenkins public key
+# COPY jenkins-agent.pub /home/jenkins/.ssh/authorized_keys
 
-# Correct permissions
-RUN chown -R jenkins:jenkins /home/jenkins/.ssh && \
-    chmod 700 /home/jenkins/.ssh && \
-    chmod 600 /home/jenkins/.ssh/authorized_keys
+# # Correct permissions
+# RUN chown -R jenkins:jenkins /home/jenkins/.ssh && \
+#     chmod 700 /home/jenkins/.ssh && \
+#     chmod 600 /home/jenkins/.ssh/authorized_keys
 
 EXPOSE 22
 
@@ -247,38 +247,6 @@ Allows Docker commands without root.
 
 ---
 
-## Copy Public Key
-
-```dockerfile
-COPY jenkins-agent.pub \
-/home/jenkins/.ssh/authorized_keys
-```
-
-This is the most important step.
-
-During image creation,
-
-```
-id_rsa.pub
-        │
-        ▼
-authorized_keys
-```
-
-Every container built from this image automatically trusts the Jenkins controller.
-
----
-
-## SSH Permissions
-
-```dockerfile
-chmod 700 ~/.ssh
-chmod 600 authorized_keys
-```
-
-SSH requires strict permissions.
-
----
 
 # Task 5 – Build the Docker Image
 
@@ -318,10 +286,11 @@ Run the container.
 
 ```bash
 docker run -d \
---name jenkins-agent \
--p 2222:22 \
--v /var/run/docker.sock:/var/run/docker.sock \
-jenkins-agent:v1
+  --name jenkins-agent \
+  -p 2222:22 \
+  -v ~/.ssh:/home/jenkins/.ssh:ro \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  jenkins-agent:v1
 ```
 
 Explanation
@@ -331,8 +300,8 @@ Explanation
 | -d             | Detached mode          |
 | --name         | Container Name         |
 | -p             | Publish SSH Port       |
+| -v .ssh        | uses the authorized_keys on host |
 | -v docker.sock | Allows Docker commands |
-
 ---
 
 Verify
