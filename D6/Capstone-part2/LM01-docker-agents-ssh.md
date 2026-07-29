@@ -259,7 +259,7 @@ Run the container.
 docker run -d \
   --name jenkins-agent \
   -p 2222:22 \
-  -v home/labuser/.ssh:/home/jenkins/.ssh:ro \
+  -v /home/labuser/.ssh:/home/jenkins/.ssh:ro \
   -v /var/run/docker.sock:/var/run/docker.sock \
   jenkins-agent:v1
 ```
