@@ -320,6 +320,17 @@ Welcome to Ubuntu
 jenkins@container:~$
 ```
 
+If there is an error "not able to login"
+```bash
+cp  ~/.ssh/id_rsa key1.pem
+```
+
+then sssh again with 
+```bash
+ssh -i key1.pem -p 2222 jenkins@localhost
+```
+
+
 No password should be requested.
 
 Verify Java
