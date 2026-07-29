@@ -152,16 +152,16 @@ RUN useradd -m -s /bin/bash jenkins
 # Add Jenkins user to sudo and docker groups
 RUN usermod -aG sudo,docker jenkins
 
-# # Create SSH directory
-# RUN mkdir -p /home/jenkins/.ssh
+# Create SSH directory
+RUN mkdir -p /home/jenkins/.ssh
 
-# # Copy Jenkins public key
-# COPY jenkins-agent.pub /home/jenkins/.ssh/authorized_keys
+# Copy Jenkins public key
+COPY jenkins-agent.pub /home/jenkins/.ssh/authorized_keys
 
-# # Correct permissions
-# RUN chown -R jenkins:jenkins /home/jenkins/.ssh && \
-#     chmod 700 /home/jenkins/.ssh && \
-#     chmod 600 /home/jenkins/.ssh/authorized_keys
+# Correct permissions
+RUN chown -R jenkins:jenkins /home/jenkins/.ssh && \
+    chmod 700 /home/jenkins/.ssh && \
+    chmod 600 /home/jenkins/.ssh/authorized_keys
 
 EXPOSE 22
 
