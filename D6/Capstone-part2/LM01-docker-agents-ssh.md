@@ -253,13 +253,24 @@ jenkins-agent       v1
 
 # Task 5 – Run the Jenkins Agent Container
 
-Run the container.
+Run the container with volume.
 
 ```bash
 docker run -d \
   --name jenkins-agent \
   -p 2222:22 \
   -v /home/labuser/.ssh:/home/jenkins/.ssh:ro \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  jenkins-agent:v1
+```
+
+
+Run the container without volume for keys.
+
+```bash
+docker run -d \
+  --name jenkins-agent \
+  -p 2222:22 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   jenkins-agent:v1
 ```
