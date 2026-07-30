@@ -1,1 +1,5 @@
 mynotes/
+Videos
+*.class
+log*.*
+*.log
