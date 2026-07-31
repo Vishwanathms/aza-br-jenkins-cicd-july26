@@ -18,7 +18,7 @@ After completing this assignment, students will be able to:
 
 - Configure Jenkins for CI/CD
 - Integrate GitHub with Jenkins
-- Build Java or Python applications
+- Build Java applications
 - Execute automated unit tests
 - Build Docker images
 - Authenticate Jenkins with AWS
