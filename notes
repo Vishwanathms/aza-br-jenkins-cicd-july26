@@ -1,0 +1,1 @@
+docker tag vishwacloudlab/stackdemo:latest 891377102321.dkr.ecr.us-east-1.amazonaws.com/31-python-app:latest

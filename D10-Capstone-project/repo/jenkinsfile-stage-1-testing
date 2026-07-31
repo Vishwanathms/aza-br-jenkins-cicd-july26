@@ -1,0 +1,114 @@
+pipeline {
+
+    agent {label "python"}
+
+    options {
+        timestamps()
+    }
+
+    stages {
+
+        stage('Checkout Source') {
+            steps {
+                echo "========================================="
+                echo "Checking out source code from GitHub..."
+                echo "========================================="
+
+                checkout scm
+            }
+        }
+
+        stage('Display Build Information') {
+            steps {
+
+                echo "Build Number   : ${env.BUILD_NUMBER}"
+                echo "Build ID       : ${env.BUILD_ID}"
+                echo "Job Name       : ${env.JOB_NAME}"
+                echo "Branch Name    : ${env.BRANCH_NAME}"
+                echo "Workspace      : ${env.WORKSPACE}"
+                echo "Build URL      : ${env.BUILD_URL}"
+                echo "Git Commit     : ${env.GIT_COMMIT}"
+            }
+        }
+
+        stage('Verify Workspace') {
+            steps {
+
+                sh '''
+                echo "========================================="
+                echo "Current Directory"
+                echo "========================================="
+                pwd
+
+                echo ""
+
+                echo "========================================="
+                echo "Workspace Contents"
+                echo "========================================="
+                ls -al
+
+                echo ""
+
+                echo "========================================="
+                echo "Python Version"
+                echo "========================================="
+                python3 --version || true
+
+                echo ""
+
+                echo "========================================="
+                echo "PIP Version"
+                echo "========================================="
+                pip3 --version || true
+
+                echo ""
+
+                echo "========================================="
+                echo "Docker Version"
+                echo "========================================="
+                docker --version || true
+                '''
+            }
+        }
+
+        stage('Create Build Information') {
+            steps {
+
+                sh '''
+                cat > build-info.txt << EOF
+                Build Number : ${BUILD_NUMBER}
+                Job Name     : ${JOB_NAME}
+                Build Date   : $(date)
+                Git Commit   : ${GIT_COMMIT}
+                Workspace    : ${WORKSPACE}
+                EOF
+                '''
+
+                sh 'cat build-info.txt'
+            }
+        }
+
+        stage('Archive Build Information') {
+            steps {
+
+                archiveArtifacts artifacts: 'build-info.txt', fingerprint: true
+            }
+        }
+
+    }
+
+    post {
+
+        always {
+            echo "Pipeline Execution Completed."
+        }
+
+        success {
+            echo "Build Successful."
+        }
+
+        failure {
+            echo "Build Failed."
+        }
+    }
+}
