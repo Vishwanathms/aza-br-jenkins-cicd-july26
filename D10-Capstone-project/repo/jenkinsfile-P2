@@ -1,0 +1,125 @@
+pipeline {
+
+    agent { label 'python' }
+
+    environment {
+
+        AWS_REGION      = 'ap-south-1'
+        AWS_ACCOUNT_ID  = '123456789012'
+
+        ECR_REPOSITORY  = 'python-flask-app'
+
+        IMAGE_TAG       = "${BUILD_NUMBER}"
+
+        IMAGE_URI       = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}"
+    }
+
+    options {
+        timestamps()
+    }
+
+    stages {
+
+        stage('Checkout Source') {
+            steps {
+                echo "Checking out source..."
+                checkout scm
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+
+                sh '''
+                docker build -t ${ECR_REPOSITORY}:${IMAGE_TAG} .
+                '''
+            }
+        }
+
+        stage('Login to Amazon ECR') {
+            steps {
+
+                sh '''
+                aws ecr get-login-password --region ${AWS_REGION} \
+                | docker login \
+                --username AWS \
+                --password-stdin \
+                ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                '''
+            }
+        }
+
+        stage('Tag Image') {
+            steps {
+
+                sh '''
+                docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${IMAGE_URI}
+                '''
+            }
+        }
+
+        stage('Push Image to Amazon ECR') {
+            steps {
+
+                sh '''
+                docker push ${IMAGE_URI}
+                '''
+            }
+        }
+
+        stage('Deploy using Docker Compose') {
+            steps {
+
+                sh '''
+                export IMAGE_URI=${IMAGE_URI}
+
+                docker compose down || true
+
+                docker compose pull
+
+                docker compose up -d
+                '''
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+
+                sh '''
+                docker ps
+
+                sleep 10
+
+                curl http://localhost:8000 || true
+                '''
+            }
+        }
+
+    }
+
+    post {
+
+        success {
+
+            echo "======================================"
+            echo "Application Deployed Successfully"
+            echo "Image : ${IMAGE_URI}"
+            echo "======================================"
+
+        }
+
+        failure {
+
+            echo "Pipeline Failed"
+
+        }
+
+        always {
+
+            sh 'docker images | head'
+
+        }
+
+    }
+
+}
